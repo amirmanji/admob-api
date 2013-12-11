@@ -79,6 +79,13 @@ admob.logout
 
 ```
 
+Test
+---
+
+    $ gem install bundler
+    $ bundle install --path vendor/bundle
+    $ bundle exec rake
+
 Contributing
 ---
 
