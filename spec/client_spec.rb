@@ -55,10 +55,10 @@ describe AdMobApi::Client do
         .to_return(:body => fixture('site_stats.json'))
 
       stats = admob.stats(id, start_date..end_date)
-      expect(stats.clicks).to be 89312
-      expect(stats.revenue).to be 4483.1018
-      expect(stats.ecpm).to be 1.186
-      expect(stats.impressions).to be 3779956
+      expect(stats.clicks).to eq 89312
+      expect(stats.revenue).to eq 4483.1018
+      expect(stats.ecpm).to eq 1.186
+      expect(stats.impressions).to eq 3779956
       expect(stats.date).to eq "#{start_date}/#{end_date}"
     end
   end
