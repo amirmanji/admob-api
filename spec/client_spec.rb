@@ -39,7 +39,7 @@ describe AdMobApi::Client do
     end
   end
 
-  describe '#sites' do
+  describe '#stats' do
     it 'returns site stats' do
       id         = 'a11111111111111'
       start_date = Date.new(2013, 6, 1)
@@ -54,7 +54,7 @@ describe AdMobApi::Client do
         })
         .to_return(:body => fixture('site_stats.json'))
 
-      stats = admob.stats(id, start_date..end_date)
+      stats = admob.stats(id, "site", start_date..end_date)
       expect(stats.clicks).to eq 89312
       expect(stats.revenue).to eq 4483.1018
       expect(stats.ecpm).to eq 1.186

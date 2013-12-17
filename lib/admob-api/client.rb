@@ -1,5 +1,8 @@
 require 'httpclient'
 require 'json'
+require 'admob-api/ad'
+require 'admob-api/ad_group'
+require 'admob-api/campaign'
 require 'admob-api/site'
 require 'admob-api/stats'
 require 'admob-api/validator'
@@ -45,19 +48,34 @@ class AdMobApi
       @client_key, @email, @password, @token = nil
     end
 
-    def sites(include_deleted = false)
-      params = include_deleted ? {:include_deleted => 1} : {}
+    def sites(params = {})
       res    = get('/v2/site/search', params)
       res.map {|s| AdMobApi::Site.new(s) }
     end
+    
+    def ads(params = {})
+      res = get('/v2/ad/search', params)
+      res.map {|s| AdMobApi::Ad.new(s) }
+    end
+    
+    def ad_groups(params = {})
+      res = get('/v2/ad_group/search', params)
+      res.map {|s| AdMobApi::AdGroup.new(s) }
+    end
+    
+    def campaigns(params = {})
+      res = get('/v2/campaign/search', params)
+      res.map {|s| AdMobApi::Campaign.new(s) }
+    end
 
-    def stats(site_id, date_range = :today, opt = {})
+    def stats(ids, type, date_range = :today, opt = {})
       if date_range.is_a?(Symbol)
         date_range = AdMobApi::DateRange.send(date_range)
       end
-      site_id_key = site_id.is_a?(Array) ? 'site_id[]' : :site_id
+      
+      id_key = ids.is_a?(Array) ? "#{type}_id[]" : "#{type}_id"
       params = {
-        site_id_key => site_id,
+        id_key => ids,
         :start_date => date_range.begin,
         :end_date   => date_range.end
       }
@@ -66,7 +84,7 @@ class AdMobApi
       unless opt[:order_by].nil?
         params["order_by[#{opt[:order_by]}]"] = opt[:order] || :desc       
       end
-      res = get('/v2/site/stats', params)
+      res = get("/v2/#{type}/stats", params)
       AdMobApi::Stats.new(res.first)
     end
   end
