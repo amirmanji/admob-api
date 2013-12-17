@@ -79,8 +79,8 @@ class AdMobApi
         :start_date => date_range.begin,
         :end_date   => date_range.end
       }
-      params[:object_dimention] = opt[:object_dimention] unless opt[:object_dimention].nil?
-      params[:time_dimention]   = opt[:time_dimention] unless opt[:time_dimention].nil?
+      params[:object_dimension] = opt[:object_dimension] unless opt[:object_dimension].nil?
+      params[:time_dimension]   = opt[:time_dimension] unless opt[:time_dimension].nil?
       unless opt[:order_by].nil?
         params["order_by[#{opt[:order_by]}]"] = opt[:order] || :desc       
       end
